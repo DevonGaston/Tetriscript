@@ -85,6 +85,48 @@ document.addEventListener('DOMContentLoaded', () => {
   // Make tetronimo move down every second
   var timerId = setInterval(moveDown, 1000)
 
+  // Allow player to move Tetronimo with keyboard controls
+  function control(e) {
+    if (e.keyCode == 37 || e.keyCode == 65) {
+      moveLeft()
+    }
+    if (e.keyCode == 39 || e.keyCode == 68) {
+      moveRight()
+    }
+    if(e.keyCode == 38 || e.keyCode == 87) {
+      //rotate()
+    }
+    if (e.keyCode == 40 || e.keyCode == 83) {
+      moveDown()
+    }
+  }
+  document.addEventListener('keyup', control)
+
+  // Movement functions
+  function moveLeft() {
+    undraw()
+    const isAtLeftEdge = current.some(index => (currentPosition + index) % width == 0)
+
+    if (!isAtLeftEdge) currentPosition--
+
+    if (current.some(index => squares[currentPosition + index].classList.contains('taken'))) {
+      currentPosition++
+    }
+    draw()
+  }
+
+  function moveRight() {
+    undraw()
+    const isAtRightEdge = current.some(index => (currentPosition + index) % width == width - 1)
+
+    if (!isAtRightEdge) currentPosition++
+
+    if (current.some(index => squares[currentPosition + index].classList.contains('taken'))) {
+      currentPosition--
+    }
+    draw()
+  }
+
   // Move down fucntion
   function moveDown() {
     undraw()
