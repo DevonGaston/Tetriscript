@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
-  //Create grid
+  // Create grid
   var iDiv = document.createElement('div')
   iDiv.id = 'grid'
   iDiv.className = 'grid'
@@ -9,6 +9,13 @@ document.addEventListener('DOMContentLoaded', () => {
   var innerDiv
   for (let i = 0; i < 200; i++) {
     innerDiv = document.createElement('div')
+    iDiv.appendChild(innerDiv)
+  }
+
+  // Create floor for tetronimos to stand on
+  for (let i = 0; i < 10; i++) {
+    innerDiv = document.createElement('div')
+    innerDiv.setAttribute('class', 'taken')
     iDiv.appendChild(innerDiv)
   }
 
@@ -29,7 +36,7 @@ document.addEventListener('DOMContentLoaded', () => {
     [0, width, width + 1, width * 2 + 1],
     [width + 1, width + 2, width * 2, width * 2 + 1],
     [0, width, width + 1, width * 2 + 1],
-    [width + 1, width + 2, width * 2, width * 2 + 1],
+    [width + 1, width + 2, width * 2, width * 2 + 1]
   ]
   const tTetromino = [
     [1, width, width + 1, width + 2],
@@ -58,9 +65,12 @@ document.addEventListener('DOMContentLoaded', () => {
   let random = Math.floor(Math.random() * theTetronimoes.length)
   let current = theTetronimoes[random][currentRotation]
 
+  //Initial draw; looks cleaner
+  draw()
+
   // Draw tetronimo
   function draw() {
-    current.forEach (index => {
+    current.forEach(index => {
       squares[currentPosition + index].classList.add('tetronimo')
     })
   }
@@ -71,4 +81,28 @@ document.addEventListener('DOMContentLoaded', () => {
       squares[currentPosition + index].classList.remove('tetronimo')
     })
   }
+
+  // Make tetronimo move down every second
+  var timerId = setInterval(moveDown, 1000)
+
+  // Move down fucntion
+  function moveDown() {
+    undraw()
+    currentPosition += width
+    draw()
+    freeze()
+  }
+
+  // Freeze function; tetronimo stands on taken space
+  function freeze() {
+    if (current.some(index => squares[currentPosition + index + width].classList.contains('taken'))) {
+      current.forEach(index => squares[currentPosition + index].classList.add('taken'))
+      // New tetronimo begins to fall
+      random = Math.floor(Math.random() * theTetronimoes.length)
+      current = theTetronimoes[random][currentRotation]
+      currentPosition = 4
+      draw()
+    }
+  }
+
 })

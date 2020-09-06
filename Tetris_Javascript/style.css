@@ -1,14 +1,14 @@
 .grid {
-  width: 200px;
-  height: 400px;
+  background-color: yellow;
   display: flex;
   flex-wrap: wrap;
-  background-color: yellow;
+  height: 400px;
+  width: 200px;
 }
 
 .grid div{
-  width: 20px;
   height: 20px;
+  width: 20px;
 }
 .tetronimo{
   background-color: blue;
