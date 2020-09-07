@@ -40,9 +40,11 @@ document.addEventListener('DOMContentLoaded', () => {
   // Define and HTML elements (grid, squares, etc)
   const grid = document.querySelector('.grid')
   let squares = Array.from(document.querySelectorAll('.grid div'))
-  const ScoreDisplay = document.querySelector('#score')
-  const StartBtn = document.querySelector('#start-button')
+  const scoreDisplay = document.querySelector('#score')
+  const startBtn = document.querySelector('#start-button')
   const width = 10
+  let timerId
+
   // Tetriminos
   const lTetromino = [
     [1, width + 1, width * 2 + 1, 2],
@@ -100,9 +102,6 @@ document.addEventListener('DOMContentLoaded', () => {
       squares[currentPosition + index].classList.remove('tetronimo')
     })
   }
-
-  // Make tetronimo move down every second
-  var timerId = setInterval(moveDown, 1000)
 
   // Allow player to move Tetronimo with keyboard controls
   function control(e) {
@@ -203,5 +202,18 @@ document.addEventListener('DOMContentLoaded', () => {
       displaySquares[displayIndex + index].classList.add('tetronimo')
     })
   }
+  // Button functionality
+  startBtn.addEventListener('click', () => {
+    if (timerId) {
+      clearInterval(timerId)
+      timerId = null
+    }
+    else {
+      draw()
+      timerId = setInterval(moveDown, 1000)
+      nextRandom = Math.floor(Math.random() * theTetronimoes.length)
+      displayShape()
+    }
+  })
 
 })
