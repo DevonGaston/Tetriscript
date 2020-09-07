@@ -1,9 +1,15 @@
 document.addEventListener('DOMContentLoaded', () => {
+
+  // Create container for grids
+  var containDiv = document.createElement('div')
+  containDiv.id = 'container'
+  containDiv.className = 'container'
+  document.body.appendChild(containDiv)
   // Create grid
   var iDiv = document.createElement('div')
   iDiv.id = 'grid'
   iDiv.className = 'grid'
-  document.body.appendChild(iDiv)
+  containDiv.appendChild(iDiv)
 
   // Create blocks in grid
   var innerDiv
@@ -16,6 +22,18 @@ document.addEventListener('DOMContentLoaded', () => {
   for (let i = 0; i < 10; i++) {
     innerDiv = document.createElement('div')
     innerDiv.setAttribute('class', 'taken')
+    iDiv.appendChild(innerDiv)
+  }
+
+  // Create minigrid to display upcoming tetronimo
+  iDiv = document.createElement('div')
+  iDiv.id = 'mini-grid'
+  iDiv.className = 'mini-grid'
+  containDiv.appendChild(iDiv)
+
+  // Create blocks in minigrid
+  for (let i = 0; i < 16; i++) {
+    innerDiv = document.createElement('div')
     iDiv.appendChild(innerDiv)
   }
 
@@ -63,9 +81,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Randomly select first tetronimo and rotation
   let random = Math.floor(Math.random() * theTetronimoes.length)
+  let nextRandom = 0
   let current = theTetronimoes[random][currentRotation]
 
-  //Initial draw; looks cleaner
+  // Initial draw; looks cleaner
   draw()
 
   // Draw tetronimo
@@ -151,11 +170,38 @@ document.addEventListener('DOMContentLoaded', () => {
     if (current.some(index => squares[currentPosition + index + width].classList.contains('taken'))) {
       current.forEach(index => squares[currentPosition + index].classList.add('taken'))
       // New tetronimo begins to fall
-      random = Math.floor(Math.random() * theTetronimoes.length)
+      random = nextRandom
+      nextRandom = Math.floor(Math.random() * theTetronimoes.length)
       current = theTetronimoes[random][currentRotation]
       currentPosition = 4
       draw()
+      displayShape()
     }
+  }
+
+  // Show upcoming tetonimo in mini-grid
+  const displaySquares = document.querySelectorAll('.mini-grid div')
+  const displayWidth = 4
+  let displayIndex = 0
+
+  // theTetronimoes sans rotations
+  const upNextTetronimo = [
+    [1, displayWidth + 1, displayWidth * 2 + 1, 2], // lTetromino
+    [0, displayWidth, displayWidth + 1, displayWidth * 2 + 1], // zTetromino
+    [1, displayWidth, displayWidth + 1, displayWidth + 2], // tTetromino
+    [0, 1, displayWidth, displayWidth + 1], // oTetromino
+    [1, displayWidth + 1, displayWidth * 2 + 1, displayWidth * 3 + 1] // iTetromino
+  ]
+
+  // Display shape in mini-grid display
+  function displayShape() {
+    // Remove tetronimo from grid
+    displaySquares.forEach(square => {
+      square.classList.remove('tetronimo')
+    })
+    upNextTetronimo[nextRandom].forEach(index => {
+      displaySquares[displayIndex + index].classList.add('tetronimo')
+    })
   }
 
 })
