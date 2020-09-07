@@ -93,8 +93,8 @@ document.addEventListener('DOMContentLoaded', () => {
     if (e.keyCode == 39 || e.keyCode == 68) {
       moveRight()
     }
-    if(e.keyCode == 38 || e.keyCode == 87) {
-      //rotate()
+    if (e.keyCode == 38 || e.keyCode == 87) {
+      rotate()
     }
     if (e.keyCode == 40 || e.keyCode == 83) {
       moveDown()
@@ -133,6 +133,17 @@ document.addEventListener('DOMContentLoaded', () => {
     currentPosition += width
     draw()
     freeze()
+  }
+
+  // Rotate tetronimo
+  function rotate() {
+    undraw()
+    currentRotation++
+    if (currentRotation === current.length) {
+      currentRotation = 0
+    }
+    current = theTetronimoes[random][currentRotation]
+    draw()
   }
 
   // Freeze function; tetronimo stands on taken space
