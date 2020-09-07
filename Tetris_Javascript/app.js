@@ -44,6 +44,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const startBtn = document.querySelector('#start-button')
   const width = 10
   let timerId
+  let score = 0
 
   // Tetriminos
   const lTetromino = [
@@ -175,6 +176,7 @@ document.addEventListener('DOMContentLoaded', () => {
       currentPosition = 4
       draw()
       displayShape()
+      addScore()
     }
   }
 
@@ -201,6 +203,25 @@ document.addEventListener('DOMContentLoaded', () => {
     upNextTetronimo[nextRandom].forEach(index => {
       displaySquares[displayIndex + index].classList.add('tetronimo')
     })
+  }
+
+  // Add score
+  function addScore() {
+    for (let i = 0; i < 199; i += width) {
+      const row = [i, i + 1, i + 2, i + 3, i + 4, i + 5, i + 6, i + 7, i + 8, i + 9]
+
+      if (row.every(index => squares[index].classList.contains('taken'))) {
+        score += 10
+        scoreDisplay.innerHTML = score
+        row.forEach(index => {
+          squares[index].classList.remove('taken')
+          squares[index].classList.remove('tetronimo')
+        })
+        const squaresRemoved = squares.splice(i, width)
+        squares = squaresRemoved.concat(squares)
+        squares.forEach(cell => grid.appendChild(cell))
+      }
+    }
   }
   // Button functionality
   startBtn.addEventListener('click', () => {
