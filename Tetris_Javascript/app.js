@@ -46,6 +46,9 @@ document.addEventListener('DOMContentLoaded', () => {
   let timerId
   let score = 0
 
+  // Determines if movement commands can function
+  let canMove = 0
+
   // Tetriminos
   const lTetromino = [
     [1, width + 1, width * 2 + 1, 2],
@@ -106,17 +109,19 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Allow player to move Tetronimo with keyboard controls
   function control(e) {
-    if (e.keyCode == 37 || e.keyCode == 65) {
-      moveLeft()
-    }
-    if (e.keyCode == 39 || e.keyCode == 68) {
-      moveRight()
-    }
-    if (e.keyCode == 38 || e.keyCode == 87) {
-      rotate()
-    }
-    if (e.keyCode == 40 || e.keyCode == 83) {
-      moveDown()
+    if (canMove == 1) {
+      if (e.keyCode == 37 || e.keyCode == 65) {
+        moveLeft()
+      }
+      if (e.keyCode == 39 || e.keyCode == 68) {
+        moveRight()
+      }
+      if (e.keyCode == 38 || e.keyCode == 87) {
+        rotate()
+      }
+      if (e.keyCode == 40 || e.keyCode == 83) {
+        moveDown()
+      }
     }
   }
   document.addEventListener('keyup', control)
@@ -172,7 +177,7 @@ document.addEventListener('DOMContentLoaded', () => {
       // New tetronimo begins to fall
       random = nextRandom
       nextRandom = Math.floor(Math.random() * theTetronimoes.length)
-      current = theTetronimoes[random][currentRotation]
+      current = theTetronimoes[random][0]
       currentPosition = 4
       draw()
       displayShape()
@@ -230,6 +235,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (current.some(index => squares[currentPosition + index].classList.contains('taken'))) {
       scoreDisplay.innerHTML = 'Game Over'
       clearInterval(timerId)
+      canMove = 0
     }
   }
   // Button functionality
@@ -237,10 +243,12 @@ document.addEventListener('DOMContentLoaded', () => {
     if (timerId) {
       clearInterval(timerId)
       timerId = null
+      canMove = 0
     }
     else {
       draw()
       timerId = setInterval(moveDown, 1000)
+      canMove = 1
       nextRandom = Math.floor(Math.random() * theTetronimoes.length)
       displayShape()
     }
