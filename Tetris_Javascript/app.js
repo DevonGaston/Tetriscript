@@ -87,11 +87,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Randomly select first tetronimo and rotation
   let random = Math.floor(Math.random() * theTetronimoes.length)
-  let nextRandom = 0
+  let nextRandom = Math.floor(Math.random() * theTetronimoes.length)
   let current = theTetronimoes[random][currentRotation]
 
-  // Initial draw; looks cleaner
-  draw()
 
   // Draw tetronimo
   function draw() {
@@ -126,14 +124,26 @@ document.addEventListener('DOMContentLoaded', () => {
   }
   document.addEventListener('keyup', control)
 
+  // Determines if tetronimo is about to cross right edge
+  function isAtRight() {
+    return current.some(index=> (currentPosition + index + 1) % width === 0)
+  }
+
+  // Determines if tetronimos is about to cross the left edge
+  function isAtLeft() {
+    return current.some(index=> (currentPosition + index) % width === 0)
+  }
+
+  // Determines if tetronimo is about to cross a taken space
+  function isTaken() {
+    return current.some(index => squares[currentPosition + index].classList.contains('taken'))
+  }
+
   // Movement functions
   function moveLeft() {
     undraw()
-    const isAtLeftEdge = current.some(index => (currentPosition + index) % width == 0)
-
-    if (!isAtLeftEdge) currentPosition--
-
-    if (current.some(index => squares[currentPosition + index].classList.contains('taken'))) {
+    if (!isAtLeft()) currentPosition--
+    if (isTaken()) {
       currentPosition++
     }
     draw()
@@ -141,11 +151,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function moveRight() {
     undraw()
-    const isAtRightEdge = current.some(index => (currentPosition + index) % width == width - 1)
-
-    if (!isAtRightEdge) currentPosition++
-
-    if (current.some(index => squares[currentPosition + index].classList.contains('taken'))) {
+    if (!isAtRight()) currentPosition++
+    if (isTaken()) {
       currentPosition--
     }
     draw()
@@ -249,9 +256,7 @@ document.addEventListener('DOMContentLoaded', () => {
       draw()
       timerId = setInterval(moveDown, 1000)
       canMove = 1
-      nextRandom = Math.floor(Math.random() * theTetronimoes.length)
       displayShape()
     }
   })
-
 })
