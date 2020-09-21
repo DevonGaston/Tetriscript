@@ -166,6 +166,23 @@ document.addEventListener('DOMContentLoaded', () => {
     freeze()
   }
 
+  // Checks the rotated position to avoid collisions
+  function checkRotatedPosition (P) {
+    P = P || currentPosition
+    if ((P+1) % width < 4) {
+      if (isAtRight() || isTaken()) {
+        currentPosition += 1
+        checkRotatedPosition(P)
+      }
+    }
+    else if (P % width > 5) {
+      if (isAtLeft() || isTaken()) {
+        currentPosition -= 1
+        checkRotatedPosition(P)
+      }
+    }
+  }
+
   // Rotate tetronimo
   function rotate() {
     undraw()
@@ -174,6 +191,7 @@ document.addEventListener('DOMContentLoaded', () => {
       currentRotation = 0
     }
     current = theTetronimoes[random][currentRotation]
+    checkRotatedPosition()
     draw()
   }
 
