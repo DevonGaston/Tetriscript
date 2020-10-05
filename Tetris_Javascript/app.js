@@ -49,6 +49,16 @@ document.addEventListener('DOMContentLoaded', () => {
   // Determines if movement commands can function
   let canMove = 0
 
+  const colors = [
+    'orange',
+    'grey',
+    'blue',
+    'turquoise',
+    'red',
+    'pink',
+    'white'
+  ]
+
   // Tetriminos
   const lTetronimo = [
     [1, width + 1, width * 2 + 1, 2],
@@ -108,6 +118,7 @@ document.addEventListener('DOMContentLoaded', () => {
   function draw() {
     current.forEach(index => {
       squares[currentPosition + index].classList.add('tetronimo')
+      squares[currentPosition + index].style.backgroundColor = colors[random]
     })
   }
 
@@ -115,6 +126,7 @@ document.addEventListener('DOMContentLoaded', () => {
   function undraw() {
     current.forEach(index => {
       squares[currentPosition + index].classList.remove('tetronimo')
+      squares[currentPosition + index].style.backgroundColor = ''
     })
   }
 
@@ -245,9 +257,11 @@ document.addEventListener('DOMContentLoaded', () => {
     // Remove tetronimo from grid
     displaySquares.forEach(square => {
       square.classList.remove('tetronimo')
+      square.style.backgroundColor = ''
     })
     upNextTetronimo[nextRandom].forEach(index => {
       displaySquares[displayIndex + index].classList.add('tetronimo')
+      displaySquares[currentPosition + index].style.backgroundColor = colors[nextRandom]
     })
   }
 
@@ -262,6 +276,7 @@ document.addEventListener('DOMContentLoaded', () => {
         row.forEach(index => {
           squares[index].classList.remove('taken')
           squares[index].classList.remove('tetronimo')
+          squares[index].style.backgroundColor = ''
         })
         const squaresRemoved = squares.splice(i, width)
         squares = squaresRemoved.concat(squares)

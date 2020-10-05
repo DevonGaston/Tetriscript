@@ -15,7 +15,8 @@
   width: 20px;
 }
 .tetronimo{
-  background-color: blue;
+ outline-style: solid;
+ outline-width: thin;
 }
 
 .mini-grid{
