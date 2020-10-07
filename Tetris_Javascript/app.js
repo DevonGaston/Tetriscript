@@ -119,6 +119,7 @@ document.addEventListener('DOMContentLoaded', () => {
     current.forEach(index => {
       squares[currentPosition + index].classList.add('tetronimo')
       squares[currentPosition + index].style.backgroundColor = colors[random]
+      squares[currentPosition + index].style.outline = 'thin solid'
     })
   }
 
@@ -127,6 +128,7 @@ document.addEventListener('DOMContentLoaded', () => {
     current.forEach(index => {
       squares[currentPosition + index].classList.remove('tetronimo')
       squares[currentPosition + index].style.backgroundColor = ''
+      squares[currentPosition + index].style.outline = ''
     })
   }
 
@@ -258,10 +260,12 @@ document.addEventListener('DOMContentLoaded', () => {
     displaySquares.forEach(square => {
       square.classList.remove('tetronimo')
       square.style.backgroundColor = ''
+      square.style.outline = ''
     })
     upNextTetronimo[nextRandom].forEach(index => {
       displaySquares[displayIndex + index].classList.add('tetronimo')
       displaySquares[currentPosition + index].style.backgroundColor = colors[nextRandom]
+      displaySquares[currentPosition + index].style.outline = 'thin solid'
     })
   }
 
@@ -277,6 +281,7 @@ document.addEventListener('DOMContentLoaded', () => {
           squares[index].classList.remove('taken')
           squares[index].classList.remove('tetronimo')
           squares[index].style.backgroundColor = ''
+          squares[index].style.outline = ''
         })
         const squaresRemoved = squares.splice(i, width)
         squares = squaresRemoved.concat(squares)
