@@ -1,3 +1,4 @@
+
 document.addEventListener('DOMContentLoaded', () => {
 
   // Create container for grids
@@ -115,7 +116,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
   // Draw tetronimo
-  function draw() {
+  const draw = () => {
     current.forEach(index => {
       squares[currentPosition + index].classList.add('tetronimo')
       squares[currentPosition + index].style.backgroundColor = colors[random]
@@ -124,7 +125,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // Undraw tetronimo
-  function undraw() {
+  const undraw = () => {
     current.forEach(index => {
       squares[currentPosition + index].classList.remove('tetronimo')
       squares[currentPosition + index].style.backgroundColor = ''
@@ -133,18 +134,18 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // Allow player to move Tetronimo with keyboard controls
-  function control(e) {
-    if (canMove == 1) {
-      if (e.keyCode == 37 || e.keyCode == 65) {
+  const control = (e) => {
+    if (canMove === 1) {
+      if (e.keyCode === 37 || e.keyCode === 65) {
         moveLeft()
       }
-      if (e.keyCode == 39 || e.keyCode == 68) {
+      if (e.keyCode === 39 || e.keyCode === 68) {
         moveRight()
       }
-      if (e.keyCode == 38 || e.keyCode == 87) {
+      if (e.keyCode === 38 || e.keyCode === 87) {
         rotate()
       }
-      if (e.keyCode == 40 || e.keyCode == 83) {
+      if (e.keyCode === 40 || e.keyCode === 83) {
         moveDown()
       }
     }
@@ -152,22 +153,22 @@ document.addEventListener('DOMContentLoaded', () => {
   document.addEventListener('keyup', control)
 
   // Determines if tetronimo is about to cross right edge
-  function isAtRight() {
+  const isAtRight = () => {
     return current.some(index=> (currentPosition + index + 1) % width === 0)
   }
 
   // Determines if tetronimos is about to cross the left edge
-  function isAtLeft() {
+  const isAtLeft = () => {
     return current.some(index=> (currentPosition + index) % width === 0)
   }
 
   // Determines if tetronimo is about to cross a taken space
-  function isTaken() {
+  const isTaken = () => {
     return current.some(index => squares[currentPosition + index].classList.contains('taken'))
   }
 
   // Movement functions
-  function moveLeft() {
+  const moveLeft = () => {
     undraw()
     if (!isAtLeft()) currentPosition--
     if (isTaken()) {
@@ -176,7 +177,7 @@ document.addEventListener('DOMContentLoaded', () => {
     draw()
   }
 
-  function moveRight() {
+  const moveRight = () => {
     undraw()
     if (!isAtRight()) currentPosition++
     if (isTaken()) {
@@ -186,7 +187,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // Move down fucntion
-  function moveDown() {
+  const moveDown = () => {
     undraw()
     currentPosition += width
     draw()
@@ -194,7 +195,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // Checks the rotated position to avoid collisions
-  function checkRotatedPosition (P) {
+  const checkRotatedPosition = (P) => {
     P = P || currentPosition
     if ((P+1) % width < 4) {
       if (isAtRight() || isTaken()) {
@@ -211,7 +212,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // Rotate tetronimo
-  function rotate() {
+  const rotate =() => {
     undraw()
     currentRotation++
     if (currentRotation === current.length) {
@@ -223,7 +224,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // Freeze function; tetronimo stands on taken space
-  function freeze() {
+  const freeze = () => {
     if (current.some(index => squares[currentPosition + index + width].classList.contains('taken'))) {
       current.forEach(index => squares[currentPosition + index].classList.add('taken'))
       // New tetronimo begins to fall
@@ -255,7 +256,7 @@ document.addEventListener('DOMContentLoaded', () => {
   ]
 
   // Display shape in mini-grid display
-  function displayShape() {
+  const displayShape = () => {
     // Remove tetronimo from grid
     displaySquares.forEach(square => {
       square.classList.remove('tetronimo')
@@ -270,7 +271,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // Add score
-  function addScore() {
+  const addScore = () => {
     for (let i = 0; i < 199; i += width) {
       const row = [i, i + 1, i + 2, i + 3, i + 4, i + 5, i + 6, i + 7, i + 8, i + 9]
 
@@ -291,7 +292,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // Game over
-  function gameOver() {
+  const gameOver = () => {
     if (current.some(index => squares[currentPosition + index].classList.contains('taken'))) {
       scoreDisplay.innerHTML = 'Game Over'
       clearInterval(timerId)
